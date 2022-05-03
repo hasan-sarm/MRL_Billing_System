@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class BankAccount extends Migration
+class Communication extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class BankAccount extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql_bank')->create('bankaccountes', function (Blueprint $table) {
-            $table->id();
-            $table->string('user_name');
-            $table->integer('card_number');
-            $table->string('cvc',400);
+        Schema::connection('mysql_communication')->create('communication', function (Blueprint $table) {
+            $table->id('city_code');
+            $table->integer('number');
             $table->float('amount');
+            $table->date('next_payment');
+            $table->integer('pay_state');
             $table->timestamps();
         });
     }
