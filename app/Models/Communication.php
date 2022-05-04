@@ -21,4 +21,15 @@ class Communication extends Model
         'created_at',
         'updated_at',
     ];
+    /**
+     * Relation
+     */
+    //belong to // one to many
+     /**
+     * Relation
+     */
+    //Belongs to
+    public function city(){
+        return $this ->belongsTo('App\Models\CityCode','city_code_id','city_code');
+    }
 }
