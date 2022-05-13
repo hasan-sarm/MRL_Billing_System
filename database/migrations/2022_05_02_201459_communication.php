@@ -13,8 +13,10 @@ class Communication extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql_communication')->create('communication', function (Blueprint $table) {
-            $table->id('city_code');
+        Schema::connection('mysql_communication')->create('communications', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedInteger('city_code');
+            $table->foreign('city_code')->references('id')->on('city_code')->onDelete('cascade');
             $table->integer('number');
             $table->float('amount');
             $table->date('next_payment');

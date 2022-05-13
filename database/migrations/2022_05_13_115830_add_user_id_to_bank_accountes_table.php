@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CityCode extends Migration
+class AddUserIdToBankAccountesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class CityCode extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql_communication')->create('city_codes', function (Blueprint $table) {
-            $table->id();
-            $table->string('city');
+        Schema::connection('mysql_bank')->table('bank_accountes', function (Blueprint $table) {
+            $table->foreignId('user_id')->default(1);
         });
     }
 
@@ -26,6 +25,8 @@ class CityCode extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('bank_accountes', function (Blueprint $table) {
+            $table->dropColumn('user_id');
+        });
     }
 }

@@ -8,8 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class CityCode extends Model
 {
     use HasFactory;
+    protected $connection = 'mysql_communication';
     protected $fillable = [
-        'city_code_id',
+      
         'city',
     ];
       /**
@@ -18,6 +19,6 @@ class CityCode extends Model
     // One to Many
     public function communication()
     {
-        return $this ->hasMany('App\Models\Communication','city_code_id','city_code');
+        return $this ->hasMany('App\Models\Communication','city_code');
     }
 }

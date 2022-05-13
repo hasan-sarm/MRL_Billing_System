@@ -11,7 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable implements JWTSubject
 {
     use HasApiTokens, HasFactory, Notifiable;
-
+    protected $connection = 'mysql';
     /**
      * The attributes that are mass assignable.
      *
@@ -47,7 +47,8 @@ class User extends Authenticatable implements JWTSubject
     //One to One
     public function accountes()
     {
-        return $this ->hasOne('App\Models\BankAccount','user_id','id');
+        return $this->setConnection('mysql_bank')->hasOne(BankAccounte::class);
+      //  return $this ->hasOne('App\Models\BankAccount','user_id','id');
     }
 
     /**

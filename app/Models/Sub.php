@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Sub extends Model
 {
+    protected $connection = 'mysql';
     use HasFactory;
     protected $fillable = [
         'sub_name',

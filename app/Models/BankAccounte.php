@@ -4,15 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
-class BankAccount extends Model
+class BankAccounte extends Model
 {
     use HasFactory;
+    protected $connection = 'mysql_bank';
     protected $fillable = [
         'user_name',
         'card_number',
         'cvc',
         'amount',
+        'user_id',
         'created_at',
         'updated_at',
     ];
@@ -27,7 +30,8 @@ class BankAccount extends Model
      * Relation
      */
     //Belongs to
-    public function user(){
-        return $this ->belongsTo('App\Models\User','cvc','id');
+    public function users(){
+        return $this->setConnection('mysql')->belongsTo(User::class);
+      //  return $this ->belongsTo('App\Models\User','user_id','id');
     }
 }
