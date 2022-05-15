@@ -3,16 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\BankAccounte;
-use App\Models\CityCode ;
 use App\Models\Communication;
+use App\Models\Sub;
 use App\Models\Transe;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User;
-
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-
-use function PHPUnit\Framework\isEmpty;
 
 class CommunicatioController extends Controller
 {
@@ -67,16 +62,17 @@ class CommunicatioController extends Controller
             return response()->json(['messege'=> 'bill not found or payed']);
         }
 
-         $amount = $bill->amount;
+        $amount = $bill->amount;
         $pay_state= $bill->pay_state;
         $user_id= Auth::guard('api')->user()->id;
 
          $bankaccount = BankAccounte::where('user_id',$user_id)->first();
-
+         $communication_ministry_account = BankAccounte::where('user_name','=','Communication Ministry')->first();
        if ($amount<= $bankaccount->amount && $pay_state == 0)
         {
             $bankaccount->amount -= $amount ;
             $bill->pay_state = 1;
+            $communication_ministry_account->amount+=$amount;
             //transformation info
             $input['Transe_name']='communication';
             $input['from']=$bankaccount->user_name;
@@ -85,12 +81,21 @@ class CommunicatioController extends Controller
             $input['bill_id']=$bill->id;
             $input['user_id']=$bankaccount->id;
             $transe=Transe::create($input);
+            //subscrite info
+            $input2['sub_name'] = 'communication';
+            $input2['category'] = 'payed subs';
+            $input2['next_payment']=$bill->next_payment;
+            $input2['amount']=$bill->amount;
+            $input2['user_id']=$user_id;
+            $sub = Sub::create($input2);
             $bill->save();
             $bankaccount->save();
+            $communication_ministry_account->save();
             return response()->json([
                 'messege'=> 'payed seccesfuly ',
                 'your cashe is' =>$bankaccount->amount,
                 'trans info'=>$transe,
+                'new subscribe'=>$sub,
         ]);
         }
         else
