@@ -48,6 +48,16 @@ return [
             'provider' => 'users',
             'hash'=>false
         ],
+        'admin-api' => [
+            'driver' => 'jwt',
+            'provider' => 'admins',
+            'hash'=>false
+        ],
+        'super_admin-api' => [
+            'driver' => 'jwt',
+            'provider' => 'super_admins',
+            'hash'=>false
+        ],
     ],
 
     /*
@@ -72,6 +82,15 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin::class,
+        ],
+        'super_admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\SuperAdmin::class,
+        ],
+
 
         // 'users' => [
         //     'driver' => 'database',

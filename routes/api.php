@@ -2,8 +2,13 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommunicatioController;
+use App\Http\Middleware\CheckAdminToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthAdminController;
+use App\Http\Controllers\AuthSuperAdminController;
+use App\Http\Controllers\SuperAdminController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -26,13 +31,29 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group([
 
     'middleware' => 'api',
-    'prefix' => 'auth'
+
 
 ], function ($router) {
-
+    Route::group([ 'prefix' => 'user', ], function ($router) {
     Route::post('register',[AuthController::class,'register']);
     Route::post('login',[AuthController::class,'login']);
     Route::post('logout',[AuthController::class,'logout']);
+});
+    Route::group([ 'prefix' => 'admin', ], function ($router) {
+        Route::post('login',[AuthAdminController::class,'login']);
+        Route::post('logout',[AuthAdminController::class,'logout']);
+
+
+    });
+    Route::group([ 'prefix' => 'Super_admin' ], function ($router) {
+        Route::post('superlog',[App\Http\Controllers\AuthSuperAdminController::class,'superlog'])->name('superlog');
+        Route::post('logout',[AuthSuperAdminController::class,'logout']);
+
+
+    });
+
+
+
 
 
 });
@@ -42,7 +63,24 @@ Route::middleware('auth:api')->group(function ()
     Route::get('payBill',[CommunicatioController::class,'PaySearch']);//pay for a bill by id
     Route::get('payedBill',[CommunicatioController::class,'searchPayed']);//search for payed Bill
     Route::get('NotpayedBill',[CommunicatioController::class,'searchUnPayed']);//search for unpayed Bill
+
 });
+/// super admin log in
 
 
+// seper Admin route
+Route::get('profile',function(){
+    return 'only super admin can reach me ';
+})->name('login');
+Route::group([
+    'middleware' => 'App\Http\Middleware\AuthSuperAdmin:super_admin-api',
+    'prefix' => 'Super_admin',
 
+], function () {
+
+
+    Route::post('AddAdmin',[SuperAdminController::class,'NewAdmin']);
+    Route::post('update',[SuperAdminController::class,'update']);
+    Route::get('getSubs',[SuperAdminController::class,'getSubs']);
+
+});

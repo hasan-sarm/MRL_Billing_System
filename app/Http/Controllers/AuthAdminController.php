@@ -2,50 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\DB;
 
-class AuthController extends Controller
+
+class AuthAdminController extends Controller
 {
     protected $db_mysql;
     public function __construct()
     {
         $this ->db_mysql= config('database.connections.mysql.database');
-     $this->middleware('auth:api',['except'=>['login','register']]);
+    // $this->middleware('AsignGaurd:admin-api',['except'=>['login']]);
     }
+
+
     /**
      * Register
      */
-    public function register (Request $request)
-    {
-         //$cvc= DB::connection('mysql_bank')->table('bankaccounts')->select('cvc');
-        $validator =Validator::make($request->all(),[
-            'name'=>'required',
-            'email'=>'required|string|email|unique:users',
-            'password'=>'required|min:8',
-            'card_number'=>'required|exists:mysql_bank.bank_accountes',
-            'cvc'=>'required|exists:mysql_bank.bank_accountes',
-        ]);
 
-        if ($validator->fails())
-        {
-            return response()->json($validator->errors()->toJson(),400);
-        }
-        $user=User::create(array_merge(
-            $validator->validated(),
-            ['password'=>bcrypt($request->password)]
-        ));
-        $credentials=$request->only(['email','password']);
-        $token=Auth::guard('api')->attempt($credentials);
-        return response()->json([
-            'message'=>'Register successfully',
-            'acces_token'=>$token
-        ],201);
-    }
     /**
      * Login
      */
@@ -62,16 +39,17 @@ class AuthController extends Controller
      }
      $credentials=$request->only(['email','password']);
 
-     if(!$token=Auth::guard('api')->attempt($credentials))
+     if(!$token=auth()->guard('admin-api')->attempt($credentials))
      {
        return response()->json(['error'=>'Unauthorized'],401);
      }
 
      return response()->json([
          'access_token'=>$token,
-         'user'=>Auth::guard('api')->user(),
+         'user'=>auth()->guard('admin-api')->user(),
 
        ]);
+
     }
     /**
      * Get the authenticated User.
@@ -88,7 +66,7 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-   public function logout()
+  /* public function logout()
     {
         auth()->logout();
 
@@ -121,6 +99,4 @@ class AuthController extends Controller
         ]);
     }
     */
-
-
 }
