@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 use function PHPUnit\Framework\isEmpty;
 
@@ -73,10 +74,10 @@ class SuperAdminController extends Controller
         $user->email= $input['email'] ;
         }
         if($request->exists('password')){
-        $user->password= $input['password'] ;
+        $user->password=  Hash::make($input['password'])  ;
         }
         if($request->exists('card_number')){
-        $user->card_numbe= $input['card_number'] ;
+        $user->card_numbe=  $input['card_number'] ;
         }
         if($request->exists('cvc')){
             $user->cvc= $input['cvc'] ;
@@ -87,12 +88,20 @@ class SuperAdminController extends Controller
     }
     public function getSubs(Request $request)
     {
-        $id= $request->id;
-        $subs = Sub::where('user_id',$id)->get();
-      /*  if(isEmpty($subs)){
+        $user_id= $request->user_id;
+        $subs = Sub::whereHas('user', function ($q) use ($user_id) {
+            $q->where('user_id',$user_id);
+
+            })->get();
+
+
+
+        if(isEmpty($subs)){
             return response()->json(['Subscrubes'=>'no subs for this user']);
 
-        }*/
+        }
         return response()->json(['Subscrubes'=>$subs]);
     }
+
+
 }

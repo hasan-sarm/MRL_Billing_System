@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommunicatioController;
-use App\Http\Middleware\CheckAdminToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthAdminController;
@@ -70,7 +69,7 @@ Route::middleware('auth:api')->group(function ()
 
 // seper Admin route
 Route::get('profile',function(){
-    return 'only super admin can reach me ';
+    return 'Unauthenticated user';
 })->name('login');
 Route::group([
     'middleware' => 'App\Http\Middleware\AuthSuperAdmin:super_admin-api',
