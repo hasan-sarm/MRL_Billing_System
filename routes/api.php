@@ -2,12 +2,13 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommunicatioController;
+use App\Http\Controllers\EmailController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthAdminController;
 use App\Http\Controllers\AuthSuperAdminController;
 use App\Http\Controllers\SuperAdminController;
-
+use App\Mail\AlertMail;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,7 +52,7 @@ Route::group([
 
     });
 
-
+    Route::get('/email',[EmailController::class,'email']);
 
 
 
@@ -81,5 +82,7 @@ Route::group([
     Route::post('AddAdmin',[SuperAdminController::class,'NewAdmin']);
     Route::post('update',[SuperAdminController::class,'update']);
     Route::get('getSubs',[SuperAdminController::class,'getSubs']);
+    Route::post('adduser',[SuperAdminController::class,'adduser']);
 
 });
+

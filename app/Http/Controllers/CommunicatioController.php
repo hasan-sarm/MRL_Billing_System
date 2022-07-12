@@ -65,8 +65,8 @@ class CommunicatioController extends Controller
         $amount = $bill->amount;
         $pay_state= $bill->pay_state;
         $user_id= Auth::guard('api')->user()->id;
-
-         $bankaccount = BankAccounte::where('user_id',$user_id)->first();
+        $card_number= Auth::guard('api')->user()->card_number;
+         $bankaccount = BankAccounte::where('card_number', $card_number)->first();
          $communication_ministry_account = BankAccounte::where('user_name','=','Communication Ministry')->first();
        if ($amount<= $bankaccount->amount && $pay_state == 0)
         {
@@ -79,7 +79,7 @@ class CommunicatioController extends Controller
             $input['to']='Communication Ministry';
             $input['transe_amount']=$bill->amount;
             $input['bill_id']=$bill->id;
-            $input['user_id']=$bankaccount->id;
+            $input['user_id']=$user_id;
             $transe=Transe::create($input);
             //subscrite info
             $input2['sub_name'] = 'communication';

@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\EmailController;
+use App\Http\Controllers\NotificationToEmailController;
+use App\Http\Controllers\TestNoteficaionPucherController;
+use App\Mail\AlertMail;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +21,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+/*Route::get('/email', function () {
+    Mail::to('hasan.sarm.syria.h.s@gmail.com')->send(new AlertMail());
+    return new AlertMail();
+
+});*/
+Route::get('/email',[NotificationToEmailController::class,'notifyemail']);
+Route::get('/notify',[TestNoteficaionPucherController::class,'notifypusher']);
+

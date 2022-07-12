@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Models\BankAccounte;
 use Illuminate\Support\Facades\DB;
 
 class AuthController extends Controller
@@ -41,10 +42,14 @@ class AuthController extends Controller
         ));
         $credentials=$request->only(['email','password']);
         $token=Auth::guard('api')->attempt($credentials);
+        $banckAccount= BankAccounte::where('card_number',$request->card_number)->first();
+        $banckAccount->user_id = $user->id;
+        $banckAccount->save();
         return response()->json([
             'message'=>'Register successfully',
             'acces_token'=>$token
         ],201);
+
     }
     /**
      * Login

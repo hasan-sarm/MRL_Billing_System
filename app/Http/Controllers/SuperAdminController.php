@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\BankAccounte;
 use App\Models\Sub;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redis;
 
 use function PHPUnit\Framework\isEmpty;
 
@@ -101,6 +103,33 @@ class SuperAdminController extends Controller
 
         }
         return response()->json(['Subscrubes'=>$subs]);
+    }
+    public function adduser(Request $request)
+    {
+        $validator =Validator::make($request->all(),[
+            'name'=>'required',
+            'email'=>'required|string|email|unique:users',
+            'password'=>'required|min:8',
+            'card_number'=>'required|exists:mysql_bank.bank_accountes',
+            'cvc'=>'required|exists:mysql_bank.bank_accountes',
+        ]);
+
+        if ($validator->fails())
+        {
+            return response()->json($validator->errors()->toJson(),400);
+        }
+        $user=User::create(array_merge(
+            $validator->validated(),
+            ['password'=>bcrypt($request->password)]
+        ));
+        $banckAccount= BankAccounte::where('card_number',$request->card_number)->first();
+        $banckAccount->user_id = $user->id;
+        $banckAccount->save();
+
+        return response()->json([
+            'message'=>'user added successfully',
+
+        ],201);
     }
 
 
