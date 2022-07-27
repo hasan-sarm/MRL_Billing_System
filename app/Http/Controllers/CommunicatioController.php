@@ -83,7 +83,7 @@ class CommunicatioController extends Controller
             $transe=Transe::create($input);
             //subscrite info
             $input2['sub_name'] = 'communication';
-            $input2['category'] = 'payed subs';
+            $input2['category_id'] = '1';
             $input2['next_payment']=$bill->next_payment;
             $input2['amount']=$bill->amount;
             $input2['user_id']=$user_id;

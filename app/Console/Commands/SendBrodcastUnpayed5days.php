@@ -45,7 +45,7 @@ class SendBrodcastUnpayed5days extends Command
         $day = Carbon::today()->addDays(5);
         $Subs=Sub::whereHas('user',
         function ($q) use ($day) {
-             $q->where('category','unpayed subs');
+             $q->where('category_id','2');
              $q->where('next_payment',$day);
              })->get();
         foreach ($Subs as $Sub)

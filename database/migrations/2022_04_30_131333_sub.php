@@ -16,11 +16,11 @@ class Sub extends Migration
        Schema::create('subs', function (Blueprint $table) {
              $table->id();
             $table->string('sub_name');
-            $table->string('category');
+            $table->integer('category_id');
             $table->date('next_payment');
             $table->float('amount');
             $table->integer('user_id');
-           
+            $table->softDeletes();
             $table->timestamps();
         });
     }

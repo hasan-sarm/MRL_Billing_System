@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthAdminController;
 use App\Http\Controllers\AuthSuperAdminController;
+use App\Http\Controllers\SubsController;
 use App\Http\Controllers\SuperAdminController;
 use App\Mail\AlertMail;
 
@@ -63,6 +64,9 @@ Route::middleware('auth:api')->group(function ()
     Route::get('payBill',[CommunicatioController::class,'PaySearch']);//pay for a bill by id
     Route::get('payedBill',[CommunicatioController::class,'searchPayed']);//search for payed Bill
     Route::get('NotpayedBill',[CommunicatioController::class,'searchUnPayed']);//search for unpayed Bill
+    Route::post('addsub',[SubsController::class,'addSubs']);
+    Route::get('yoursub',[SubsController::class,'yoursub']);
+    Route::get('removesub',[SubsController::class,'removesub']);
 
 });
 /// super admin log in
