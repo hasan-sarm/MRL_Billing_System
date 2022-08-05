@@ -28,27 +28,30 @@ class AuthAdminController extends Controller
      */
     public function login(Request $request)
     {
-     $validator =Validator::make($request->all(),[
+        $validator =Validator::make($request->all(),[
 
-         'email'=>'required|string|email',
-         'password'=>'required|string|min:8',
-     ]);
-     if ($validator->fails())
-     {
-         return response()->json($validator->errors()->toJson(),422);
-     }
-     $credentials=$request->only(['email','password']);
+            'email'=>'required|string|email',
+            'password'=>'required|string|min:8',
+        ]);
+        if ($validator->fails())
+        {
+            return response()->json($validator->errors()->toJson(),422);
+        }
+        $credentials=$request->only(['email','password']);
 
-     if(!$token=auth()->guard('admin-api')->attempt($credentials))
-     {
-       return response()->json(['error'=>'Unauthorized'],401);
-     }
+        if(!$token=auth()->guard('admin-api')->attempt($credentials))
+        {
+          return response()->json(['error'=>'Unathorized'],401);
+        }
+        //return $this->respondWihtToken($token);
 
-     return response()->json([
-         'access_token'=>$token,
-         'user'=>auth()->guard('admin-api')->user(),
+        return response()->json([
+            'access_token'=>$token,
+            'user'=>auth()->guard('admin-api')->user(),
 
-       ]);
+          ]);
+
+
 
     }
     /**

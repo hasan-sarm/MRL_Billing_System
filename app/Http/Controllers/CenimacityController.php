@@ -3,51 +3,28 @@
 namespace App\Http\Controllers;
 
 use App\Models\BankAccounte;
-use App\Models\Communication;
+use App\Models\Cenimacity;
 use App\Models\Sub;
 use App\Models\Transe;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
-class CommunicatioController extends Controller
+
+class CenimacityController extends Controller
 {
-    /*
-    //search for bill
-    */
-
-
     public function search(Request $request)
     {
-        $city_code= $request -> city_code ;
-        $number=$request -> number ;
-        $bill = Communication::whereHas('city', function ($q) use ($number,$city_code) {
-             $q->where('city_code',$city_code);
-             $q->where('number',$number);
+
+        $code=$request -> code ;
+        $bill = Cenimacity::where( function ($q) use ($code) {
+             $q->where('code',$code);
+
              })->get();
              if ( $bill ->isEmpty()) {
                 return response()->json(['messege'=> 'bill not found ']);
             }
             return response()->json([$bill]);
-        /*  $bills = CityCode::with ('communication')
-            ->where('id',$city_code)->get();
-            foreach ($bills as $bill)
-            {
-                 $numbers = $bill-> communication;
-                 foreach($numbers as $nemb)
-                 {
-                     $numberin = $nemb->number;
-                     if ($numberin == $number)
-                     {
-                         echo $nemb;
-                     }
-                     continue;
-                 }
 
-            }*/
-            /* foreach($bills as $bill)
-             {
-                echo  $bill -> communication -> amount;
-             }*/
 
     }
     /**
@@ -57,7 +34,7 @@ class CommunicatioController extends Controller
     {
 
         $id= $request -> id ;
-        $bill = Communication::where('pay_state',0)->find($id);
+        $bill = Cenimacity::where('pay_state',0)->find($id);
         if (is_null($bill)) {
             return response()->json(['messege'=> 'bill not found or payed']);
         }
@@ -67,23 +44,23 @@ class CommunicatioController extends Controller
         $user_id= Auth::guard('api')->user()->id;
         $card_number= Auth::guard('api')->user()->card_number;
          $bankaccount = BankAccounte::where('card_number', $card_number)->first();
-         $communication_ministry_account = BankAccounte::where('user_name','=','Communication Ministry')->first();
+         $cenima_city_account = BankAccounte::where('user_name','=','Cenima city')->first();
        if ($amount<= $bankaccount->amount && $pay_state == 0)
         {
             $bankaccount->amount -= $amount ;
             $bill->pay_state = 1;
-            $communication_ministry_account->amount+=$amount;
+            $cenima_city_account->amount+=$amount;
             //transformation info
-            $input['Transe_name']='communication';
+            $input['Transe_name']='Cenima city';
             $input['from']=$bankaccount->user_name;
-            $input['to']='Communication Ministry';
+            $input['to']='Cenima city';
             $input['transe_amount']=$bill->amount;
             $input['bill_id']=$bill->id;
             $input['user_id']=$user_id;
             $transe=Transe::create($input);
             //subscrite info
-            $input2['sub_name'] = 'communication';
-            $input2['category_id'] = '1';
+            $input2['sub_name'] = 'Cenima city';
+            $input2['category_id'] = '2';
             $input2['next_payment']=$bill->next_payment;
             $input2['amount']=$bill->amount;
             $input2['user_id']=$user_id;
@@ -91,7 +68,7 @@ class CommunicatioController extends Controller
             $sub = Sub::create($input2);
             $bill->save();
             $bankaccount->save();
-            $communication_ministry_account->save();
+            $cenima_city_account->save();
             return response()->json([
                 'messege'=> 'payed seccesfuly ',
                 'your cashe is' =>$bankaccount->amount,
@@ -120,12 +97,11 @@ class CommunicatioController extends Controller
      */
     public function searchPayed(Request $request)
     {
-        $city_code= $request -> city_code ;
-        $number=$request -> number ;
-        $bill = Communication::whereHas('city',
-        function ($q) use ($number,$city_code) {
-             $q->where('city_code',$city_code);
-             $q->where('number',$number);
+        $code= $request -> code ;
+
+        $bill = Cenimacity::where(function ($q) use ($code) {
+             $q->where('code',$code);
+
              $q->where('pay_state',1);
              })->get();
              if ( $bill ->isEmpty()) {
@@ -138,12 +114,12 @@ class CommunicatioController extends Controller
      */
     public function searchUnPayed(Request $request)
     {
-        $city_code= $request -> city_code ;
-        $number=$request -> number ;
-      $bill = Communication::whereHas('city',
-        function ($q) use ($number,$city_code) {
-             $q->where('city_code',$city_code);
-             $q->where('number',$number);
+        $code= $request -> code ;
+
+      $bill = Cenimacity::where(
+        function ($q) use ($code) {
+             $q->where('code',$code);
+
              $q->where('pay_state',0);
              })->get();
              if ( $bill ->isEmpty()) {
@@ -151,6 +127,4 @@ class CommunicatioController extends Controller
             }
             return response()->json([$bill]);
     }
-
-
 }

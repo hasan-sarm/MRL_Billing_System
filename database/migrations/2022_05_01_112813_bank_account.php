@@ -19,6 +19,7 @@ class BankAccount extends Migration
             $table->integer('card_number');
             $table->string('cvc',400);
             $table->float('amount',12,2);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

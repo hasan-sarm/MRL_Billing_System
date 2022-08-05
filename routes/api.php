@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommunicatioController;
 use App\Http\Controllers\EmailController;
@@ -8,7 +9,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthAdminController;
 use App\Http\Controllers\AuthSuperAdminController;
 use App\Http\Controllers\SubsController;
+use App\Http\Controllers\SaharaController;
+use App\Http\Controllers\CenimacityController;
+use App\Http\Controllers\VipController;
 use App\Http\Controllers\SuperAdminController;
+use App\Http\Controllers\BankAdminController;
+
 use App\Mail\AlertMail;
 
 /*
@@ -68,6 +74,22 @@ Route::middleware('auth:api')->group(function ()
     Route::get('yoursub',[SubsController::class,'yoursub']);
     Route::get('removesub',[SubsController::class,'removesub']);
 
+    Route::get('sahara_allBill',[SaharaController::class,'search']);//search for all Bill
+    Route::get('sahara_payBill',[SaharaController::class,'PaySearch']);//pay for a bill by id
+    Route::get('sahara_payedBill',[SaharaController::class,'searchPayed']);//search for payed Bill
+
+    Route::get('vip_NotpayedBill',[VipController::class,'searchUnPayed']);//search for unpayed Bill
+    Route::get('vip_allBill',[VipController::class,'search']);//search for all Bill
+    Route::get('vip_payBill',[VipController::class,'PaySearch']);//pay for a bill by id
+    Route::get('vip_payedBill',[VipController::class,'searchPayed']);//search for payed Bill
+    Route::get('vip_NotpayedBill',[VipController::class,'searchUnPayed']);//search for unpayed Bill
+
+    Route::get('Cenimacity_NotpayedBill',[CenimacityController::class,'searchUnPayed']);//search for unpayed Bill
+    Route::get('Cenimacity_allBill',[CenimacityController::class,'search']);//search for all Bill
+    Route::get('Cenimacity_payBill',[CenimacityController::class,'PaySearch']);//pay for a bill by id
+    Route::get('Cenimacity_payedBill',[CenimacityController::class,'searchPayed']);//search for payed Bill
+    Route::get('Cenimacity_NotpayedBill',[CenimacityController::class,'searchUnPayed']);//search for unpayed Bill
+
 });
 /// super admin log in
 
@@ -87,6 +109,37 @@ Route::group([
     Route::post('update',[SuperAdminController::class,'update']);
     Route::get('getSubs',[SuperAdminController::class,'getSubs']);
     Route::post('adduser',[SuperAdminController::class,'adduser']);
+
+});
+
+Route::group([
+    'middleware' => 'App\Http\Middleware\AuthSuperAdmin:super_admin-api',
+    'prefix' => 'Super_admin',
+
+], function () {
+
+
+    Route::post('AddAdmin',[SuperAdminController::class,'NewAdmin']);
+    Route::post('update',[SuperAdminController::class,'update']);
+    Route::get('getSubs',[SuperAdminController::class,'getSubs']);
+    Route::post('adduser',[SuperAdminController::class,'adduser']);
+
+});
+Route::group([
+    'middleware' => 'App\Http\Middleware\AuthenticateAdmin:admin-api',
+    'prefix' => 'admin',
+
+], function () {
+
+
+
+    Route::get('showalluser',[AdminController::class,'showAllUser']);
+    Route::post('showallbill',[AdminController::class,'showUserBill']);
+    Route::post('update',[AdminController::class,'update']);
+    Route::post('transinfo',[BankAdminController::class,'transinfo']);
+    Route::post('addacc',[BankAdminController::class,'addacc']);
+    Route::post('delete',[BankAdminController::class,'deleteacc']);
+
 
 });
 

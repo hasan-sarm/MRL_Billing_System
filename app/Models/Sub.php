@@ -16,6 +16,7 @@ class Sub extends Model
         'next_payment',
         'amount',
         'user_id',
+        'bill_id',
         'created_at',
         'updated_at',
     ];
@@ -23,6 +24,7 @@ class Sub extends Model
     protected $hidden = [
         'created_at',
         'updated_at',
+        'deleted_at',
     ];
     public $timestamps = true;
     /**

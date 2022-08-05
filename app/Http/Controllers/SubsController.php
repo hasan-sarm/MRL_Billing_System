@@ -13,10 +13,11 @@ class SubsController extends Controller
    {
     $validator =Validator::make($request->all(),[
         'sub_name'=>'required',
-        'category'=>'required',
+
         'next_payment'=>'required|date',
         'amount'=>'required',
-        
+
+
 
     ]);
     if ($validator->fails())
@@ -25,10 +26,11 @@ class SubsController extends Controller
     }
     $user_id= Auth::guard('api')->user()->id;
     $input2['sub_name'] = $request->sub_name;
-    $input2['category_id'] = $request->category;
+    $input2['category_id'] = 2;
     $input2['next_payment']=$request->next_payment;
     $input2['amount']=$request->amount;
     $input2['user_id']=$user_id;
+    $input2['bill_id']=2;
     $sub = Sub::create($input2);
     return response()->json([
         'messege'=> 'Subscribe add seccesfuly ',

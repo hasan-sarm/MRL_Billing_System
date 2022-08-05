@@ -19,11 +19,13 @@ class BankAccounte extends Model
         'created_at',
         'updated_at',
     ];
+    protected $dates=['deleted_at'];
     protected $hidden = [
         'created_at',
         'updated_at',
         'card_number',
-        'cvc'
+        'cvc',
+        'deleted_at',
     ];
     public $timestamps = true;
     /**

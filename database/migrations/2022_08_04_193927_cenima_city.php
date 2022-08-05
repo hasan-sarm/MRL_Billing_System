@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Sub extends Migration
+class CenimaCity extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,12 @@ class Sub extends Migration
      */
     public function up()
     {
-       Schema::create('subs', function (Blueprint $table) {
-             $table->id();
-            $table->string('sub_name');
-            $table->integer('category_id');
-            $table->date('next_payment');
+        Schema::connection('mysql_cenimacity')->create('cenimacity_billes', function (Blueprint $table) {
+            $table->id();
+            $table->integer('code');
             $table->float('amount');
-            $table->integer('user_id');
-            $table->integer('bill_id');
-            $table->softDeletes();
+            $table->date('next_payment');
+            $table->tinyInteger('pay_state');
             $table->timestamps();
         });
     }
