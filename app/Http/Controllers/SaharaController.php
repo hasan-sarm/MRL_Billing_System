@@ -26,6 +26,20 @@ class SaharaController extends Controller
 
 
     }
+    // save a sub
+    public function save(Request $request)
+    {
+            $user_id= Auth::guard('api')->user()->id;
+            $input2['sub_name'] = 'Sahara pool';
+            $input2['category_id'] = '2';
+            $input2['next_payment']=$request->next_payment;
+            $input2['amount']=$request->amount;
+            $input2['user_id']=$user_id;
+            $input2['bill_id']=$request->id;
+            $sub = Sub::create($input2);
+            return response()->json(['messege'=> $sub]);
+
+    }
     /**
      * Pay a bill by Id
      */
@@ -33,7 +47,7 @@ class SaharaController extends Controller
     {
 
         $id= $request -> id ;
-        $bill = sahara::where('pay_state',0)->find($id);
+        $bill = Sahara::where('pay_state',0)->find($id);
         if (is_null($bill)) {
             return response()->json(['messege'=> 'bill not found or payed']);
         }
@@ -57,14 +71,7 @@ class SaharaController extends Controller
             $input['bill_id']=$bill->id;
             $input['user_id']=$user_id;
             $transe=Transe::create($input);
-            //subscrite info
-            $input2['sub_name'] = 'Sahara pool';
-            $input2['category_id'] = '2';
-            $input2['next_payment']=$bill->next_payment;
-            $input2['amount']=$bill->amount;
-            $input2['user_id']=$user_id;
-            $input2['bill_id']=$bill->id;
-            $sub = Sub::create($input2);
+
             $bill->save();
             $bankaccount->save();
             $sahara_account->save();
@@ -72,7 +79,7 @@ class SaharaController extends Controller
                 'messege'=> 'payed seccesfuly ',
                 'your cashe is' =>$bankaccount->amount,
                 'trans info'=>$transe,
-                'new subscribe'=>$sub,
+
         ]);
         }
         else

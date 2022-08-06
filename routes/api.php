@@ -14,7 +14,7 @@ use App\Http\Controllers\CenimacityController;
 use App\Http\Controllers\VipController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\BankAdminController;
-
+use App\Http\Controllers\UserController;
 use App\Mail\AlertMail;
 
 /*
@@ -77,18 +77,28 @@ Route::middleware('auth:api')->group(function ()
     Route::get('sahara_allBill',[SaharaController::class,'search']);//search for all Bill
     Route::get('sahara_payBill',[SaharaController::class,'PaySearch']);//pay for a bill by id
     Route::get('sahara_payedBill',[SaharaController::class,'searchPayed']);//search for payed Bill
+    Route::post('sahara_save',[SaharaController::class,'save']);//save
 
-    Route::get('vip_NotpayedBill',[VipController::class,'searchUnPayed']);//search for unpayed Bill
+
     Route::get('vip_allBill',[VipController::class,'search']);//search for all Bill
     Route::get('vip_payBill',[VipController::class,'PaySearch']);//pay for a bill by id
     Route::get('vip_payedBill',[VipController::class,'searchPayed']);//search for payed Bill
     Route::get('vip_NotpayedBill',[VipController::class,'searchUnPayed']);//search for unpayed Bill
+    Route::post('vip_save',[VipController::class,'save']);//save
 
-    Route::get('Cenimacity_NotpayedBill',[CenimacityController::class,'searchUnPayed']);//search for unpayed Bill
+
+
     Route::get('Cenimacity_allBill',[CenimacityController::class,'search']);//search for all Bill
     Route::get('Cenimacity_payBill',[CenimacityController::class,'PaySearch']);//pay for a bill by id
     Route::get('Cenimacity_payedBill',[CenimacityController::class,'searchPayed']);//search for payed Bill
     Route::get('Cenimacity_NotpayedBill',[CenimacityController::class,'searchUnPayed']);//search for unpayed Bill
+    Route::post('Cenimacity_save',[CenimacityController::class,'save']);//save
+
+    // user info
+    Route::get('profile',[UserController::class,'profile']); //profile
+    Route::post('update',[UserController::class,'update']);// update profile
+
+
 
 });
 /// super admin log in
