@@ -118,8 +118,8 @@ class WaterController extends Controller
      */
     public function searchUnPayed(Request $request)
     {
-        $city_code= $request -> city_code ;
-        $code=$request -> code ;
+      $city_code= $request -> city_code ;
+      $code=$request -> code ;
       $bill = Water::whereHas('city',
         function ($q) use ($code,$city_code) {
              $q->where('city_code',$city_code);

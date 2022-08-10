@@ -15,7 +15,7 @@ class VipController extends Controller
     {
 
         $code=$request -> code ;
-        $bill = Vip::whereHas( function ($q) use ($code) {
+        $bill = Vip::where( function ($q) use ($code) {
              $q->where('code',$code);
 
              })->get();
@@ -82,7 +82,7 @@ class VipController extends Controller
                 'messege'=> 'payed seccesfuly ',
                 'your cashe is' =>$bankaccount->amount,
                 'trans info'=>$transe,
-                
+
         ]);
         }
         else

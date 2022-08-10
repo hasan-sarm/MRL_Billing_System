@@ -15,6 +15,8 @@ use App\Http\Controllers\VipController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\BankAdminController;
 use App\Http\Controllers\ElectricController;
+use App\Http\Controllers\MinistryController;
+use App\Http\Controllers\SpecialController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WaterController;
 use App\Mail\AlertMail;
@@ -91,6 +93,13 @@ Route::middleware('auth:api')->group(function ()
     Route::get('yoursub',[SubsController::class,'yoursub']);
     Route::get('removesub',[SubsController::class,'removesub']);
 
+    //All Ministry
+    Route::get('AllBill',[MinistryController::class,'search']);//search for all Bill
+    Route::get('PayBill',[MinistryController::class,'PaySearch']);//pay for a bill by id
+    Route::get('PayedBill',[MinistryController::class,'searchPayed']);//search for payed Bill
+    Route::get('notPayedBill',[MinistryController::class,'searchUnPayed']);//search for unpayed Bill
+
+
     Route::get('sahara_allBill',[SaharaController::class,'search']);//search for all Bill
     Route::get('sahara_payBill',[SaharaController::class,'PaySearch']);//pay for a bill by id
     Route::get('sahara_payedBill',[SaharaController::class,'searchPayed']);//search for payed Bill
@@ -110,6 +119,11 @@ Route::middleware('auth:api')->group(function ()
     Route::get('Cenimacity_payedBill',[CenimacityController::class,'searchPayed']);//search for payed Bill
     Route::get('Cenimacity_NotpayedBill',[CenimacityController::class,'searchUnPayed']);//search for unpayed Bill
     Route::post('Cenimacity_save',[CenimacityController::class,'save']);//save
+
+    //special subscribes
+    Route::get('s_allBill',[SpecialController::class,'search']);//search for all Bill
+    Route::get('s_payBill',[SpecialController::class,'PaySearch']);//pay for a bill by id
+    Route::post('s_save',[SpecialController::class,'save']);//save
 
     // user info
     Route::get('profile',[UserController::class,'profile']); //profile
