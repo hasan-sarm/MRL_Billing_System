@@ -7,6 +7,7 @@ use App\Models\Transe;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use function PHPUnit\Framework\isEmpty;
 
 class BankAdminController extends Controller
 {
@@ -39,9 +40,9 @@ class BankAdminController extends Controller
     $validator =Validator::make($request->all(),[
 
         'user_name'=>'required|string',
-        'card_number'=>'required|string',
-        'cvc'=>'required|integer',
-        'amount'=>'required',
+        'card_number'=>'required|string|unique:mysql_bank.Bank_accountes,card_number',
+        'cvc'=>'required|integer|unique:mysql_bank.Bank_accountes,cvc',
+        'amount'=>'required'
     ]);
     if ($validator->fails())
     {
@@ -71,7 +72,10 @@ class BankAdminController extends Controller
             $q->where('card_number',$card_number);
             $q->where('cvc',$cvc);
         })->first();
-        $account->delete();
+        if ( $account== null) {
+                return response()->json(['messege'=> 'there is no account by this card number and cvc ']);
+            }
+            $account->delete();
         return response()->json(['massege'=>'Account deleted seccesfuly']);
     }
     else{

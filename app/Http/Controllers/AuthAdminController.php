@@ -69,7 +69,7 @@ class AuthAdminController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-  /* public function logout()
+   public function logout()
     {
         auth()->logout();
 

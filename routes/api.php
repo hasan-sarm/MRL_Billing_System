@@ -14,7 +14,9 @@ use App\Http\Controllers\CenimacityController;
 use App\Http\Controllers\VipController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\BankAdminController;
+use App\Http\Controllers\ElectricController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WaterController;
 use App\Mail\AlertMail;
 
 /*
@@ -66,10 +68,25 @@ Route::group([
 });
 Route::middleware('auth:api')->group(function ()
 {
+    //Communication
     Route::get('allBill',[CommunicatioController::class,'search']);//search for all Bill
     Route::get('payBill',[CommunicatioController::class,'PaySearch']);//pay for a bill by id
     Route::get('payedBill',[CommunicatioController::class,'searchPayed']);//search for payed Bill
     Route::get('NotpayedBill',[CommunicatioController::class,'searchUnPayed']);//search for unpayed Bill
+
+    //Water
+    Route::get('wallBill',[WaterController::class,'search']);//search for all Bill
+    Route::get('wpayBill',[WaterController::class,'PaySearch']);//pay for a bill by id
+    Route::get('wpayedBill',[WaterController::class,'searchPayed']);//search for payed Bill
+    Route::get('wNotpayedBill',[WaterController::class,'searchUnPayed']);//search for unpayed Bill
+
+    //electric
+    Route::get('eallBill',[ElectricController::class,'search']);//search for all Bill
+    Route::get('epayBill',[ElectricController::class,'PaySearch']);//pay for a bill by id
+    Route::get('epayedBill',[ElectricController::class,'searchPayed']);//search for payed Bill
+    Route::get('eNotpayedBill',[ElectricController::class,'searchUnPayed']);//search for unpayed Bill
+
+    // sub
     Route::post('addsub',[SubsController::class,'addSubs']);
     Route::get('yoursub',[SubsController::class,'yoursub']);
     Route::get('removesub',[SubsController::class,'removesub']);
@@ -146,9 +163,10 @@ Route::group([
     Route::get('showalluser',[AdminController::class,'showAllUser']);
     Route::post('showallbill',[AdminController::class,'showUserBill']);
     Route::post('update',[AdminController::class,'update']);
+    //Bank admin
     Route::post('transinfo',[BankAdminController::class,'transinfo']);
     Route::post('addacc',[BankAdminController::class,'addacc']);
-    Route::post('delete',[BankAdminController::class,'deleteacc']);
+    Route::post('softdelete',[BankAdminController::class,'deleteacc']);
 
 
 });

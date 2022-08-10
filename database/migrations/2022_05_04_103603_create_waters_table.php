@@ -13,13 +13,13 @@ class CreateWatersTable extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql_water')->create('waters', function (Blueprint $table) {
+        Schema::connection('mysql_water')->create('wateres', function (Blueprint $table) {
             $table->id();
             $table->integer('code');
             $table->float('amount');
-            $table->date('next_period');
+            $table->date('next_payment');
             $table->tinyInteger('pay_state');
-            $table->tinyInteger('city_number');
+            $table->tinyInteger('city_code');
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ class CreateWatersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('waters');
+        Schema::dropIfExists('wateres');
     }
 }

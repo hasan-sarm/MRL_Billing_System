@@ -28,27 +28,7 @@ class CommunicatioController extends Controller
                 return response()->json(['messege'=> 'bill not found ']);
             }
             return response()->json([$bill]);
-        /*  $bills = CityCode::with ('communication')
-            ->where('id',$city_code)->get();
-            foreach ($bills as $bill)
-            {
-                 $numbers = $bill-> communication;
-                 foreach($numbers as $nemb)
-                 {
-                     $numberin = $nemb->number;
-                     if ($numberin == $number)
-                     {
-                         echo $nemb;
-                     }
-                     continue;
-                 }
-
-            }*/
-            /* foreach($bills as $bill)
-             {
-                echo  $bill -> communication -> amount;
-             }*/
-
+      
     }
     /**
      * Pay a bill by Id

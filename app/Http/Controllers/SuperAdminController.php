@@ -56,6 +56,10 @@ class SuperAdminController extends Controller
         $input = $request->all();
         $id = $request->id;
         $user = User::find($id);
+        if ($user == null)
+        {
+            return response()->json(['msg'=>'ther is no user in this id']);
+        }
         $validator = validator($input, [
             'name'=>'string',
             'email'=>'string|email|unique:users',
@@ -88,6 +92,8 @@ class SuperAdminController extends Controller
         $user->save();
         return response()->json(['user'=>$user,'msg'=>'user update succefully']);
     }
+
+    // get user subscribes
     public function getSubs(Request $request)
     {
         $user_id= $request->user_id;
@@ -98,7 +104,7 @@ class SuperAdminController extends Controller
 
 
 
-        if(isEmpty($subs)){
+        if($subs == null){
             return response()->json(['Subscrubes'=>'no subs for this user']);
 
         }

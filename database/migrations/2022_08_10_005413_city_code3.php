@@ -4,8 +4,10 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateElectricsTable extends Migration
+class CityCode3 extends Migration
 {
+
+    /**
     /**
      * Run the migrations.
      *
@@ -13,15 +15,9 @@ class CreateElectricsTable extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql_Electrics')->create('electrics', function (Blueprint $table) {
+        Schema::connection('mysql_water')->create('citycode3s', function (Blueprint $table) {
             $table->id();
-            $table->integer('code');
-            $table->float('amount');
-            $table->date('next_period');
-            $table->tinyInteger('pay_state');
-            $table->tinyInteger('city_number');
-
-            $table->timestamps();
+            $table->string('city');
         });
     }
 
@@ -32,6 +28,6 @@ class CreateElectricsTable extends Migration
      */
     public function down()
     {
-      //
+        //
     }
 }

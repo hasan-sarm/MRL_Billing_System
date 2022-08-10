@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Resources\User as ResourcesUser;
 use App\Models\Cenimacity;
 use App\Models\Communication ;
-use App\Models\electric;
+
+use App\Models\Electric;
 use App\Models\Sahara ;
 use App\Models\Sub;
 use App\Models\User;
 use App\Models\Vip;
-use App\Models\water;
+use App\Models\Water;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,8 +27,9 @@ class AdminController extends Controller
         {
 
             $users = User::whereHas('subs',function($q) use ($name){
-                $q->where('sub_name','communication');
+
                 $q->whereRaw("name like '%".$name."%'");
+                 $q->where('sub_name','communication');
 
             })->get();
 
@@ -39,8 +41,9 @@ class AdminController extends Controller
        elseif ($admin_id == 2)
         {
             $user = User::whereHas('subs',function($q) use ($name){
-                $q->where('sub_name','electric');
+
                 $q->whereRaw("name like '%".$name."%'");
+                 $q->where('sub_name','electric');
             })->get();
             return response()->json([
                 'users'=>$user
@@ -49,8 +52,9 @@ class AdminController extends Controller
         elseif ($admin_id == 3)
         {
             $user = User::whereHas('subs',function($q) use ($name){
-                $q->where('sub_name','water');
+
                 $q->whereRaw("name like '%".$name."%'");
+                 $q->where('sub_name','water');
             })->get();
             return response()->json([
                 'users'=>$user
@@ -59,8 +63,9 @@ class AdminController extends Controller
         elseif ($admin_id == 5)
         {
             $user = User::whereHas('subs',function($q) use ($name){
-                $q->where('sub_name','Sahara pool');
+
                 $q->whereRaw("name like '%".$name."%'");
+                 $q->where('sub_name','Sahara pool');
             })->get();
             return response()->json([
                 'users'=>$user
@@ -69,8 +74,9 @@ class AdminController extends Controller
         elseif ($admin_id == 6)
         {
             $user = User::whereHas('subs',function($q) use ($name){
-                $q->where('sub_name','Vip gym');
+
                 $q->whereRaw("name like '%".$name."%'");
+                 $q->where('sub_name','Vip gym');
             })->get();
             return response()->json([
                 'users'=>$user
@@ -79,8 +85,9 @@ class AdminController extends Controller
         elseif ($admin_id == 7)
         {
             $user = User::whereHas('subs',function($q) use ($name){
-                $q->where('sub_name','Cenima city');
+
                 $q->whereRaw("name like '%".$name."%'");
+                 $q->where('sub_name','Cenima city');
             })->get();
             return response()->json([
                 'users'=>$user
@@ -175,13 +182,13 @@ class AdminController extends Controller
         }
         else
         {
-            return response()->json(['messege'=>'erore','id'=>$admin_id]);
+            return response()->json(['error'=>'Unathorized'],401);
         }
 
     }
     public function update(Request $request)
     {
-        $id = $request->id;
+        $id = $request->bill_id;
 
         $admin_id = Auth::guard('admin-api')->user()->Ministry;
         if ($admin_id == 1)
@@ -196,11 +203,12 @@ class AdminController extends Controller
                 $comm->pay_state=0;
             }
             $comm->save();
+             return response()->json(['msg'=>'update secssfuly'],200);
 
         }
        elseif ($admin_id == 2)
         {
-            $comm = electric::find($id);
+            $comm = Electric::find($id);
             if($comm->pay_state==0)
             {
                 $comm->pay_state=1;
@@ -210,11 +218,12 @@ class AdminController extends Controller
                 $comm->pay_state=0;
             }
             $comm->save();
+             return response()->json(['msg'=>'update secssfuly'],200);
 
         }
         elseif ($admin_id == 3)
         {
-            $comm = water::find($id);
+            $comm = Water::find($id);
             if($comm->pay_state==0)
             {
                 $comm->pay_state=1;
@@ -224,6 +233,7 @@ class AdminController extends Controller
                 $comm->pay_state=0;
             }
             $comm->save();
+             return response()->json(['msg'=>'update secssfuly'],200);
 
         }
         elseif ($admin_id == 5)
@@ -238,6 +248,7 @@ class AdminController extends Controller
                 $comm->pay_state=0;
             }
             $comm->save();
+             return response()->json(['msg'=>'update secssfuly'],200);
 
         }
         elseif ($admin_id == 6)
@@ -252,6 +263,7 @@ class AdminController extends Controller
                 $comm->pay_state=0;
             }
             $comm->save();
+             return response()->json(['msg'=>'update secssfuly'],200);
         }
         elseif ($admin_id == 7)
         {
@@ -265,10 +277,12 @@ class AdminController extends Controller
                 $comm->pay_state=0;
             }
             $comm->save();
+            return response()->json(['msg'=>'update secssfuly'],200);
         }
         else
         {
-            return response()->json(['messege'=>'erore','id'=>$admin_id]);
+            return response()->json(['error'=>'Unathorized'],401);
+
         }
 
     }

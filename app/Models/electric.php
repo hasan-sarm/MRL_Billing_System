@@ -5,17 +5,33 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class electric extends Model
+class Electric extends Model
 {
     use HasFactory;
+    protected $connection = 'mysql_Electrics';
+
     protected $fillable = [
         'code',
         'amount',
-        'next_period',
+        'next_payment',
         'pay_state',
-        'city_number',
+        'city_code',
+        'created_at',
+        'updated_at',
     ];
-    public $timestamps = true;
-
-
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
+      /**
+     * Relation
+     */
+    //belong to // one to many
+     /**
+     * Relation
+     */
+    //Belongs to
+   public function city(){
+        return $this ->belongsTo('App\Models\CityCode2','city_code');
+   }
 }
